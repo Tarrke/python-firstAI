@@ -1,9 +1,10 @@
 #!./venv/bin/python
 
 import pygame
-from pygame.locals import *
+#from pygame.locals import *
 from dots import dots
 import time
+from random import randint
 
 white = pygame.Color("white")
 black = pygame.Color("black")
@@ -15,25 +16,7 @@ width, height = 800, 600
 screenSize = (800, 600)
 screen=pygame.display.set_mode(screenSize)
 
-myDots = []
-
-dot1 = dots(screenSize)
-dot2 = dots(screenSize)
-
-myDots.append(dot1)
-myDots.append(dot2)
-
-dot1.x = 100
-dot1.y = 100
-dot1.velocity = (0, -1)
-
-dot2.x = 200
-dot2.y = 200
-dot2.radius = 4
-dot2.color = "green"
-dot2.velocity = (0,1)
-
-print(myDots[1].velocity)
+myDots = [ dots(screenSize, "black", (randint(0,screenSize[0]), randint(0,screenSize[1]))) for i in range(100) ]
 
 # 3 - Load images
 #player = pygame.image.load("resources/images/dude.png")
@@ -44,7 +27,8 @@ while 1:
     screen.fill(white)
     # Draw dots
     for dot in myDots:
-        pygame.draw.circle(screen, pygame.Color(dot.color), (dot.x, dot.y), dot.radius)
+        #print(dot.pos)
+        pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
     # 6 - draw the screen elements
     #screen.blit(player, (100,100))
     # 7 - update the screen
