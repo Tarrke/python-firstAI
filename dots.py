@@ -13,6 +13,10 @@ class dots:
     goalX = 0
     goalY = 0
 
+    steps = 200
+    vmax = 10
+    vmaxsquare = vmax * vmax
+
     def __init__(self, screen, color, position):
         self.x = position[0]
         self.y = position[1]
@@ -24,14 +28,11 @@ class dots:
         #self.screenY = screen[1]
         self.pos = (self.x, self.y)
         self.moves = []
-        self.m = [] # TODO: remove me
+        # self.m = [] # TODO: remove me
         self.iter = 0
-        self.steps = 200
-        self.vmax = 10
 
         self.init_moves()
-        self.vmaxsquare = self.vmax * self.vmax
-        print(self.steps)
+        print(dots.steps)
 
     def move(self):
         self.x, self.y = (self.x + self.velocity[0], self.y + self.velocity[1])
@@ -45,9 +46,9 @@ class dots:
                 if self.x <= 2 or self.x >= dots.screenX-2 or self.y <= 2 or self.y >= dots.screenY-2:
                     self.x = max(0, min(self.x, dots.screenX))
                     self.y = max(0, min(self.y, dots.screenY))
-                    self.dead = True            
+                    self.dead = True
                 d = (self.x - dots.goalX)*(self.x - dots.goalX) + (self.y - dots.goalY)*(self.y - dots.goalY)
-                if d < 50:
+                if d < 100:
                     self.dead = True
 
     def getPos(self):
@@ -68,16 +69,16 @@ class dots:
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
         self.velocity = [self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1]]
 
-        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1] 
+        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1]
 
-        if v_square > self.vmaxsquare:
-            self.velocity[0] = self.velocity[0] * (self.vmaxsquare / v_square)**0.5
-            self.velocity[1] = self.velocity[1] * (self.vmaxsquare / v_square)**0.5
+        if v_square > dots.vmaxsquare:
+            self.velocity[0] = self.velocity[0] * (dots.vmaxsquare / v_square)**0.5
+            self.velocity[1] = self.velocity[1] * (dots.vmaxsquare / v_square)**0.5
 
-        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1] 
+        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1]
 
         self.iter += 1
-        if self.iter >= self.steps:
+        if self.iter >= dots.steps:
             self.dead = True
         print('Accel   :', self.acc)
         print('velocity:', self.velocity, v_square)
@@ -86,7 +87,7 @@ class dots:
         return True
 
     def init_moves(self):
-        for i in range(self.steps):
+        for i in range(dots.steps):
             v = Vector2(0,0)
             r = random() * 360
             v.from_polar((1,r))
@@ -94,4 +95,4 @@ class dots:
         #self.moves = [ Vector2(0,0) for i in range(len(self.m)) ]
         #self.moves = [ v.from_polar((1, self.m[i])) for i, v in enumerate(self.moves) ]
         print(self.moves[0].x)
-        # self.moves = [ (randint(0,self.screenX), randint(0,self.screenY)) for i in range(self.steps)]
+        # self.moves = [ (randint(0,self.screenX), randint(0,self.screenY)) for i in range(dots.steps)]

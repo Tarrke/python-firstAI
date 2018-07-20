@@ -30,7 +30,8 @@ goal = (400, 50)
 
 dots.screenX = screenSize[0]
 dots.screenY = screenSize[1]
-
+dots.steps = 200
+dots.vmax = 10
 max_dots = 100
 
 
@@ -38,7 +39,7 @@ max_dots = 100
 obstacle = []
 
 gDot = dots(screenSize, "red", goal)
-gDot.radius = 5
+gDot.radius = 10
 
 dots.goalX = goal[0]
 dots.goalY = goal[1]
@@ -82,6 +83,7 @@ while 1:
     clock.tick(10)
     #print(dot1.dead)
 
-time.sleep(1000)
+time.sleep(10)
 
 print("All dots are dead")
+pygame.quit()
