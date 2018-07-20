@@ -49,7 +49,7 @@ class dots:
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
         self.velocity = (self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1])
         self.iter += 1
-        if self.iter > self.steps:
+        if self.iter >= self.steps:
             self.dead = True
         print('Accel   :', self.acc)
         print('velocity:', self.velocity)
