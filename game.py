@@ -29,7 +29,7 @@ clock = pygame.time.Clock()
 start = (400, 550)
 goal = (400, 50)
 
-myDots = [ dots(screenSize, "black", start) for i in range(1) ]
+myDots = [ dots(screenSize, "black", start) for i in range(100) ]
 
 obstacle = []
 
