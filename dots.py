@@ -11,7 +11,7 @@ class dots:
         self.y = position[1]
         self.color = color
         self.radius = 2
-        self.velocity = (0,0)
+        self.velocity = [0,0]
         self.dead = False
         self.screenX = screen[0]
         self.screenY = screen[1]
@@ -21,6 +21,8 @@ class dots:
         self.init_moves()
         self.iter = 0
         self.steps = 100
+        self.vmax = 5
+        self.vmaxsquare = self.vmax * self.vmax
 
     def move(self):
         self.x, self.y = (self.x + self.velocity[0], self.y + self.velocity[1])
@@ -47,7 +49,14 @@ class dots:
         #    dirY = int(dirY / abs(dirY))
         #
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
-        self.velocity = (self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1])
+        self.velocity = [self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1]]
+
+        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1] 
+
+        if v_square > self.vmaxsquare:
+            self.velocity[0] = self.velocity[0] * self.vmaxsquare / v_square
+            self.velocity[1] = self.velocity[1] * self.vmaxsquare / v_square
+
         self.iter += 1
         if self.iter >= self.steps:
             self.dead = True
