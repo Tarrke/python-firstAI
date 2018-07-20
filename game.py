@@ -1,6 +1,7 @@
 #!./venv/bin/python
 
 import pygame
+from  pygame import draw
 #from pygame.locals import *
 from dots import dots
 import time
@@ -9,6 +10,7 @@ from random import randint
 white = pygame.Color("white")
 black = pygame.Color("black")
 green = pygame.Color("green")
+lblue = pygame.Color(120,120,255, 0)
 
 
 def areAllDotsDead(dots):
@@ -19,6 +21,12 @@ def areAllDotsDead(dots):
 
 # 2 - Initialize the game
 pygame.init()
+
+if not pygame.font.get_init():
+    pygame.font.init()
+
+font = pygame.font.Font(None, 24)
+
 
 screenSize = (800, 600)
 screen=pygame.display.set_mode(screenSize)
@@ -41,28 +49,28 @@ obstacle = []
 gDot = dots(screenSize, "red", goal)
 gDot.radius = 10
 
-dots.goalX = goal[0]
-dots.goalY = goal[1]
+dots.setGoal((goal[0], goal[1], gDot.radius))
 
 myDots = [ dots(screenSize, "black", start) for i in range(max_dots) ]
 
-
-# 3 - Load images
-#player = pygame.image.load("resources/images/dude.png")
-
-# 4 - keep looping through
+# Main Loop
 while 1:
-    # 5 - clear the screen before drawing it again
+    # clear the screen before drawing it again
     screen.fill(white)
+    # Draw informations
+    text = font.render("Generation "+str(1), True, lblue)
+    textRect = text.get_rect()
+    textRect.topleft = (50, 20)
+    screen.blit(text, textRect)
     # Draw dots
     pygame.draw.circle(screen, pygame.Color(gDot.color), gDot.getPos(), gDot.radius)
     for dot in myDots:
         pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
-    # 6 - draw the screen elements
-    #screen.blit(player, (100,100))
-    # 7 - update the screen
+
+    # Update the screen
     pygame.display.flip()
-    # 8 - loop through the events
+
+    # Loop through the events
     for event in pygame.event.get():
         # check if the event is the X button
         if event.type==pygame.QUIT:
@@ -70,18 +78,19 @@ while 1:
             print("Quitting the game")
             pygame.quit()
             exit(0)
-    # 9 - update the elements
+
+    # Update the elements
     for dot in myDots:
         dot.update()
 
+    # End of Generation?
     if areAllDotsDead(myDots):
         for dot in myDots:
             print(dot.x, dot.y)
         break
 
-    #time.sleep(0.01)
+    # Maintain at most 10 FPS
     clock.tick(10)
-    #print(dot1.dead)
 
 time.sleep(10)
 

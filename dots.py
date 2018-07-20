@@ -1,3 +1,5 @@
+"""Dots are some points that runs on the screen from a start to a goal."""
+
 from random import randint
 from random import random
 from math import pi
@@ -7,32 +9,44 @@ from pygame.math import Vector2
 class dots:
     """Class for our dots."""
 
+    # Screen size
     screenX = 0
     screenY = 0
 
+    # Goal position
     goalX = 0
     goalY = 0
+    goalSize = 0
 
     steps = 200
     vmax = 10
     vmaxsquare = vmax * vmax
 
+    @staticmethod
+    def setGoal(goal):
+        """Sets the goal
+          - posX
+          - posY
+          - size
+        """
+        dots.goalX = goal[0]
+        dots.goalY = goal[1]
+        dots.goalSize = goal[2]
+        pass
+
     def __init__(self, screen, color, position):
+        """Init comment"""
         self.x = position[0]
         self.y = position[1]
         self.color = color
         self.radius = 2
         self.velocity = [0,0]
         self.dead = False
-        #self.screenX = screen[0]
-        #self.screenY = screen[1]
         self.pos = (self.x, self.y)
         self.moves = []
-        # self.m = [] # TODO: remove me
         self.iter = 0
 
         self.init_moves()
-        print(dots.steps)
 
     def move(self):
         self.x, self.y = (self.x + self.velocity[0], self.y + self.velocity[1])
@@ -55,16 +69,6 @@ class dots:
         return (int(self.x), int(self.y))
 
     def brain(self):
-        #if( self.x == self.moves[self.iter][0] and self.y == self.moves[self.iter][1]):
-        #    self.iter += 1
-        #print('Dot going from', self.x, self.y, 'to', self.moves[self.iter], self.iter)
-        #dirX = (-self.x + self.moves[self.iter][0])
-        #dirY = (-self.y + self.moves[self.iter][1])
-        #if dirX != 0:
-        #    dirX = int(dirX / abs(dirX))
-        #if dirY != 0:
-        #    dirY = int(dirY / abs(dirY))
-        #
         print('Iter Beg:', self.iter)
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
         self.velocity = [self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1]]
@@ -87,12 +91,9 @@ class dots:
         return True
 
     def init_moves(self):
-        for i in range(dots.steps):
+        for _ in range(dots.steps):
             v = Vector2(0,0)
             r = random() * 360
             v.from_polar((1,r))
             self.moves.append(v)
-        #self.moves = [ Vector2(0,0) for i in range(len(self.m)) ]
-        #self.moves = [ v.from_polar((1, self.m[i])) for i, v in enumerate(self.moves) ]
         print(self.moves[0].x)
-        # self.moves = [ (randint(0,self.screenX), randint(0,self.screenY)) for i in range(dots.steps)]
