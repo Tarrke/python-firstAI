@@ -6,6 +6,13 @@ from pygame.math import Vector2
 
 class dots:
     """Class for our dots."""
+
+    screenX = 0
+    screenY = 0
+
+    goalX = 0
+    goalY = 0
+
     def __init__(self, screen, color, position):
         self.x = position[0]
         self.y = position[1]
@@ -13,16 +20,18 @@ class dots:
         self.radius = 2
         self.velocity = [0,0]
         self.dead = False
-        self.screenX = screen[0]
-        self.screenY = screen[1]
+        #self.screenX = screen[0]
+        #self.screenY = screen[1]
         self.pos = (self.x, self.y)
         self.moves = []
         self.m = [] # TODO: remove me
-        self.init_moves()
         self.iter = 0
-        self.steps = 100
-        self.vmax = 5
+        self.steps = 200
+        self.vmax = 10
+
+        self.init_moves()
         self.vmaxsquare = self.vmax * self.vmax
+        print(self.steps)
 
     def move(self):
         self.x, self.y = (self.x + self.velocity[0], self.y + self.velocity[1])
@@ -30,9 +39,16 @@ class dots:
     def update(self):
         if( not self.dead ):
             self.brain()
-            self.move()
-        if self.x <= 2 or self.x >= self.screenX-2 or self.y <= 2 or self.y >= self.screenY-2:
-            self.dead = True
+            # Caution, brain can suicide dots
+            if not self.dead:
+                self.move()
+                if self.x <= 2 or self.x >= dots.screenX-2 or self.y <= 2 or self.y >= dots.screenY-2:
+                    self.x = max(0, min(self.x, dots.screenX))
+                    self.y = max(0, min(self.y, dots.screenY))
+                    self.dead = True            
+                d = (self.x - dots.goalX)*(self.x - dots.goalX) + (self.y - dots.goalY)*(self.y - dots.goalY)
+                if d < 50:
+                    self.dead = True
 
     def getPos(self):
         return (int(self.x), int(self.y))
@@ -48,6 +64,7 @@ class dots:
         #if dirY != 0:
         #    dirY = int(dirY / abs(dirY))
         #
+        print('Iter Beg:', self.iter)
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
         self.velocity = [self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1]]
 
@@ -64,15 +81,15 @@ class dots:
             self.dead = True
         print('Accel   :', self.acc)
         print('velocity:', self.velocity, v_square)
+        print('Iter End:', self.iter)
 
         return True
 
     def init_moves(self):
-        self.m = [ random() * 360 for i in range(100) ]
-        print(self.m)
-        for i in range(len(self.m)):
+        for i in range(self.steps):
             v = Vector2(0,0)
-            v.from_polar((1,self.m[i]))
+            r = random() * 360
+            v.from_polar((1,r))
             self.moves.append(v)
         #self.moves = [ Vector2(0,0) for i in range(len(self.m)) ]
         #self.moves = [ v.from_polar((1, self.m[i])) for i, v in enumerate(self.moves) ]

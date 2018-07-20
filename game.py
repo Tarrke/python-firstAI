@@ -13,14 +13,13 @@ green = pygame.Color("green")
 
 def areAllDotsDead(dots):
     for dot in dots:
-        print(dot.dead)
         if not dot.dead :
             return False
     return True
 
 # 2 - Initialize the game
 pygame.init()
-width, height = 800, 600
+
 screenSize = (800, 600)
 screen=pygame.display.set_mode(screenSize)
 
@@ -29,13 +28,22 @@ clock = pygame.time.Clock()
 start = (400, 550)
 goal = (400, 50)
 
-myDots = [ dots(screenSize, "black", start) for i in range(100) ]
+dots.screenX = screenSize[0]
+dots.screenY = screenSize[1]
+
+max_dots = 100
+
+
 
 obstacle = []
 
 gDot = dots(screenSize, "red", goal)
 gDot.radius = 5
 
+dots.goalX = goal[0]
+dots.goalY = goal[1]
+
+myDots = [ dots(screenSize, "black", start) for i in range(max_dots) ]
 
 
 # 3 - Load images
@@ -66,10 +74,14 @@ while 1:
         dot.update()
 
     if areAllDotsDead(myDots):
+        for dot in myDots:
+            print(dot.x, dot.y)
         break
 
     #time.sleep(0.01)
     clock.tick(10)
     #print(dot1.dead)
+
+time.sleep(1000)
 
 print("All dots are dead")
