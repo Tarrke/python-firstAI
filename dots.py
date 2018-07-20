@@ -54,14 +54,16 @@ class dots:
         v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1] 
 
         if v_square > self.vmaxsquare:
-            self.velocity[0] = self.velocity[0] * self.vmaxsquare / v_square
-            self.velocity[1] = self.velocity[1] * self.vmaxsquare / v_square
+            self.velocity[0] = self.velocity[0] * (self.vmaxsquare / v_square)**0.5
+            self.velocity[1] = self.velocity[1] * (self.vmaxsquare / v_square)**0.5
+
+        v_square = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1] 
 
         self.iter += 1
         if self.iter >= self.steps:
             self.dead = True
         print('Accel   :', self.acc)
-        print('velocity:', self.velocity)
+        print('velocity:', self.velocity, v_square)
 
         return True
 
