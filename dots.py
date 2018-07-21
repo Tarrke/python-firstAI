@@ -47,6 +47,7 @@ class dots:
         self.moves = []
         self.iter = 0
         self.deadTime = dots.steps
+        self.hasReachedGoal = False
 
         self.init_moves()
 
@@ -68,6 +69,7 @@ class dots:
                     self.killDot()
                 d = (self.x - dots.goalX)*(self.x - dots.goalX) + (self.y - dots.goalY)*(self.y - dots.goalY)
                 if d < 100:
+                    self.hasReachedGoal = True
                     self.killDot()
 
     def getPos(self):
@@ -112,7 +114,13 @@ class dots:
             * has it reached the goal
             * how many steps did it take
         """
-        return 100000 / ((dots.goalX-self.x)*(dots.goalX-self.x)+(dots.goalY-self.y)*(dots.goalY-self.y)) + (dots.steps - self.deadTime)
+        d_goal = ((dots.goalX-self.x)*(dots.goalX-self.x)+(dots.goalY-self.y)*(dots.goalY-self.y))
+        d_steps = self.deadTime * self.deadTime
+        print("")
+        if self.hasReachedGoal:
+            return 100 + 10000/d_steps
+        else:
+            return 1/d_goal
 
     def setColor(self, colorString):
         self.color = Color(colorString)
