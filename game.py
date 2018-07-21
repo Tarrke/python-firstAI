@@ -44,14 +44,14 @@ dots.screenX = screenSize[0]
 dots.screenY = screenSize[1]
 dots.steps = 200
 dots.vmax = 10
-max_dots = 100
+max_dots = 2
 
 obstacle = []
 
 gDot = dots("red", goal)
 gDot.radius = 10
 
-myPop = population(100, "black")
+myPop = population(max_dots, "black")
 
 myPop.setGoal((goal[0], goal[1], gDot.radius))
 myPop.setScreen(screenSize)
@@ -100,11 +100,13 @@ while 1:
     # End of Generation?
     if areAllDotsDead(myPop.myDots):
         for dot in myPop.myDots:
-            print(dot.x, dot.y)
+            print(dot.x, dot.y, dot.evaluate())
         break
 
     # Maintain at most 10 FPS
     clock.tick(10)
+
+myPop.getBestDot()
 
 fps = 10
 timeframe = 10

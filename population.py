@@ -12,6 +12,7 @@ class population:
         self.start = (0,0)
         self.goal = (0,0,0)
         self.color = color
+        self.bestDot = None
 
 
     def areAllDotsDead(self):
@@ -38,3 +39,18 @@ class population:
 
     def generate(self):
         self.myDots = [ dots(self.color, self.start) for i in range(self.dotNumber) ]
+
+    def getBestDot(self):
+        score = 0
+        best = None
+        for dot in self.myDots:
+            s = dot.evaluate()
+            if s > score:
+                score = s
+                best = dot
+        self.bestDot = best
+
+        dot.setColor("green")
+        dot.radius = 4
+
+        return best

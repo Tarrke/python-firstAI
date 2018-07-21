@@ -46,6 +46,7 @@ class dots:
         self.pos = (self.x, self.y)
         self.moves = []
         self.iter = 0
+        self.deadTime = dots.steps
 
         self.init_moves()
 
@@ -64,13 +65,17 @@ class dots:
                 if self.x <= 2 or self.x >= dots.screenX-2 or self.y <= 2 or self.y >= dots.screenY-2:
                     self.x = max(0, min(self.x, dots.screenX))
                     self.y = max(0, min(self.y, dots.screenY))
-                    self.dead = True
+                    self.killDot()
                 d = (self.x - dots.goalX)*(self.x - dots.goalX) + (self.y - dots.goalY)*(self.y - dots.goalY)
                 if d < 100:
-                    self.dead = True
+                    self.killDot()
 
     def getPos(self):
         return (int(self.x), int(self.y))
+
+    def killDot(self):
+        self.deadTime = self.iter
+        self.dead = True
 
     def brain(self):
         print('Iter Beg:', self.iter)
@@ -87,7 +92,7 @@ class dots:
 
         self.iter += 1
         if self.iter >= dots.steps:
-            self.dead = True
+            self.killDot()
         print('Accel   :', self.acc)
         print('velocity:', self.velocity, v_square)
         print('Iter End:', self.iter)
@@ -101,3 +106,13 @@ class dots:
             v.from_polar((1,r))
             self.moves.append(v)
         print(self.moves[0].x)
+
+    def evaluate(self):
+        """Returns an evaluation of dot:
+            * has it reached the goal
+            * how many steps did it take
+        """
+        return 100000 / ((dots.goalX-self.x)*(dots.goalX-self.x)+(dots.goalY-self.y)*(dots.goalY-self.y)) + (dots.steps - self.deadTime)
+
+    def setColor(self, colorString):
+        self.color = Color(colorString)
