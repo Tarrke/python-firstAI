@@ -2,13 +2,12 @@
 
 import pygame
 from  pygame import draw
+from population import population
 from dots import dots
 import time
 from random import randint
 
 white = pygame.Color("white")
-black = pygame.Color("black")
-green = pygame.Color("green")
 lblue = pygame.Color(120,120,255, 0)
 
 
@@ -47,16 +46,18 @@ dots.steps = 200
 dots.vmax = 10
 max_dots = 100
 
-
-
 obstacle = []
 
-gDot = dots(screenSize, "red", goal)
+gDot = dots("red", goal)
 gDot.radius = 10
 
-dots.setGoal((goal[0], goal[1], gDot.radius))
+myPop = population(100, "black")
 
-myDots = [ dots(screenSize, "black", start) for i in range(max_dots) ]
+myPop.setGoal((goal[0], goal[1], gDot.radius))
+myPop.setScreen(screenSize)
+myPop.setStart(start)
+
+myPop.generate()
 
 # Main Loop
 while 1:
@@ -67,14 +68,16 @@ while 1:
     textRect = text.get_rect()
     textRect.topleft = (50, 20)
     screen.blit(text, textRect)
-    text2 = font.render("Morts "+str(countDead(myDots)), True, lblue)
+    text2 = font.render("Morts "+str(countDead(myPop.myDots)), True, lblue)
     textRect2 = text2.get_rect()
     textRect2.topleft = (50, 44)
     screen.blit(text2, textRect2)
     # Draw dots
-    pygame.draw.circle(screen, pygame.Color(gDot.color), gDot.getPos(), gDot.radius)
-    for dot in myDots:
-        pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
+    #pygame.draw.circle(screen, pygame.Color(gDot.color), gDot.getPos(), gDot.radius)
+    gDot.render(screen)
+    for dot in myPop.myDots:
+        #pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
+        dot.render(screen)
 
     # Update the screen
     pygame.display.flip()
@@ -89,12 +92,14 @@ while 1:
             exit(0)
 
     # Update the elements
-    for dot in myDots:
+    for dot in myPop.myDots:
         dot.update()
+        # Kill session for our dots...
+        # TODO
 
     # End of Generation?
-    if areAllDotsDead(myDots):
-        for dot in myDots:
+    if areAllDotsDead(myPop.myDots):
+        for dot in myPop.myDots:
             print(dot.x, dot.y)
         break
 
@@ -118,9 +123,9 @@ while frame < timeframe * fps:
     textRect2.topleft = (50, 44)
     screen.blit(text2, textRect2)
     # Draw dots
-    pygame.draw.circle(screen, pygame.Color(gDot.color), gDot.getPos(), gDot.radius)
-    for dot in myDots:
-        pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
+    gDot.render(screen)
+    for dot in myPop.myDots:
+        dot.render(screen)
 
     # Update the screen
     pygame.display.flip()

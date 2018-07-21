@@ -4,7 +4,9 @@ from random import randint
 from random import random
 from math import pi
 
+from pygame import Color
 from pygame.math import Vector2
+import pygame
 
 class dots:
     """Class for our dots."""
@@ -32,13 +34,12 @@ class dots:
         dots.goalX = goal[0]
         dots.goalY = goal[1]
         dots.goalSize = goal[2]
-        pass
 
-    def __init__(self, screen, color, position):
+    def __init__(self, color, position):
         """Init comment"""
         self.x = position[0]
         self.y = position[1]
-        self.color = color
+        self.color = Color(color)
         self.radius = 2
         self.velocity = [0,0]
         self.dead = False
@@ -47,6 +48,9 @@ class dots:
         self.iter = 0
 
         self.init_moves()
+
+    def render(self, screen):
+        pygame.draw.circle(screen, self.color, self.getPos(), self.radius)
 
     def move(self):
         self.x, self.y = (self.x + self.velocity[0], self.y + self.velocity[1])
