@@ -48,8 +48,10 @@ class dots:
         self.iter = 0
         self.deadTime = dots.steps
         self.hasReachedGoal = False
+        self.colorString = color
 
-        self.init_moves()
+        if len(self.moves) != dots.steps:
+            self.init_moves()
 
     def render(self, screen):
         pygame.draw.circle(screen, self.color, self.getPos(), self.radius)
@@ -68,7 +70,7 @@ class dots:
                     self.y = max(0, min(self.y, dots.screenY))
                     self.killDot()
                 d = (self.x - dots.goalX)*(self.x - dots.goalX) + (self.y - dots.goalY)*(self.y - dots.goalY)
-                if d < 100:
+                if d < self.goalSize*self.goalSize:
                     self.hasReachedGoal = True
                     self.killDot()
 
@@ -80,7 +82,7 @@ class dots:
         self.dead = True
 
     def brain(self):
-        print('Iter Beg:', self.iter)
+        #print('Iter Beg:', self.iter)
         self.acc = (self.moves[self.iter].x, self.moves[self.iter].y)
         self.velocity = [self.velocity[0] + self.acc[0], self.velocity[1] + self.acc[1]]
 
@@ -95,9 +97,9 @@ class dots:
         self.iter += 1
         if self.iter >= dots.steps:
             self.killDot()
-        print('Accel   :', self.acc)
-        print('velocity:', self.velocity, v_square)
-        print('Iter End:', self.iter)
+        #print('Accel   :', self.acc)
+        #print('velocity:', self.velocity, v_square)
+        #print('Iter End:', self.iter)
 
         return True
 
@@ -116,7 +118,7 @@ class dots:
         """
         d_goal = ((dots.goalX-self.x)*(dots.goalX-self.x)+(dots.goalY-self.y)*(dots.goalY-self.y))
         d_steps = self.deadTime * self.deadTime
-        print("")
+        #print(self.colorString, self.hasReachedGoal, 100 + 10000/d_steps, '--', d_goal, 1/d_goal)
         if self.hasReachedGoal:
             return 100 + 10000/d_steps
         else:
@@ -124,3 +126,4 @@ class dots:
 
     def setColor(self, colorString):
         self.color = Color(colorString)
+        self.colorString = colorString

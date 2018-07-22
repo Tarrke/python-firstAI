@@ -43,14 +43,17 @@ class population:
     def getBestDot(self):
         score = 0
         best = None
+        #print("current best score:", score)
         for dot in self.myDots:
             s = dot.evaluate()
+            #print("Checking ", s)
             if s > score:
                 score = s
                 best = dot
+            #print("current best score:", score)
         self.bestDot = best
-
-        dot.setColor("green")
-        dot.radius = 4
-
         return best
+
+    def markBestDot(self):
+        self.bestDot.setColor("green")
+        self.bestDot.radius = 4

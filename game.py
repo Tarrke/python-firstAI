@@ -44,7 +44,7 @@ dots.screenX = screenSize[0]
 dots.screenY = screenSize[1]
 dots.steps = 200
 dots.vmax = 10
-max_dots = 2
+max_dots = 100
 
 obstacle = []
 
@@ -107,6 +107,7 @@ while 1:
     clock.tick(10)
 
 myPop.getBestDot()
+myPop.markBestDot()
 
 fps = 10
 timeframe = 10
