@@ -1,6 +1,7 @@
 """A Population is a set of dots that form a generation."""
 
 from dots import dots
+from random import random
 
 class population:
     """Population population, oh my population"""
@@ -13,6 +14,7 @@ class population:
         self.goal = (0,0,0)
         self.color = color
         self.bestDot = None
+        self.generation = 1
 
 
     def areAllDotsDead(self):
@@ -57,3 +59,40 @@ class population:
     def markBestDot(self):
         self.bestDot.setColor("green")
         self.bestDot.radius = 4
+
+    def calculateScoreSum(self):
+        score = 0
+        for dot in self.myDots:
+            score += dot.evaluate()
+        return score
+
+    def selectParent(self):
+        """Select a parent based on its perfromances at random.
+        We get all scores on a line, then sum them. Then random on this line. Ence better performance leads to better chances to reproduce."""
+        scoreSum = self.calculateScoreSum()
+        r = random() * scoreSum
+
+        runningScoreSum = 0
+        for dot in self.myDots:
+            runningScoreSum += dot.evaluate()
+            if runningScoreSum > r:
+                return dot
+
+    def naturalSelection(self):
+        newDots = [ dots(self.color, self.start) for i in range(self.dotNumber) ]
+        self.getBestDot()
+
+        newDots[0] = self.bestDot
+        self.markBestDot()
+        newDots[0].x = self.start[0]
+        newDots[0].y = self.start[1]
+        newDots[0].dead = False
+
+        for dot in newDots:
+            dot.setBrain(self.selectParent().gimmeBabyBrain())
+
+        self.myDots = newDots
+        print("Natural Selection is done;")
+        for dot in self.myDots:
+            print(dot.dead)
+        self.generation += 1

@@ -127,3 +127,17 @@ class dots:
     def setColor(self, colorString):
         self.color = Color(colorString)
         self.colorString = colorString
+
+    def mutateBrain(self):
+        mutationRate = 0.01 # Chance that a specific direction is mutated
+        for acc in self.moves:
+            r = random()
+            if r < mutationRate:
+                # Going an other way
+                acc.from_polar((1, random()*360))
+
+    def gimmeBabyBrain(self):
+        return self.moves
+
+    def setBrain(self, brain):
+        self.moves = brain

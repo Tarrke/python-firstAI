@@ -44,7 +44,7 @@ dots.screenX = screenSize[0]
 dots.screenY = screenSize[1]
 dots.steps = 200
 dots.vmax = 10
-max_dots = 100
+max_dots = 10
 
 obstacle = []
 
@@ -64,7 +64,95 @@ while 1:
     # clear the screen before drawing it again
     screen.fill(white)
     # Draw informations
-    text = font.render("Generation "+str(1), True, lblue)
+    text = font.render("Generation "+str(myPop.generation), True, lblue)
+    textRect = text.get_rect()
+    textRect.topleft = (50, 20)
+    screen.blit(text, textRect)
+    text2 = font.render("Morts "+str(countDead(myPop.myDots)), True, lblue)
+    textRect2 = text2.get_rect()
+    textRect2.topleft = (50, 44)
+    screen.blit(text2, textRect2)
+    # Draw dots
+    #pygame.draw.circle(screen, pygame.Color(gDot.color), gDot.getPos(), gDot.radius)
+    gDot.render(screen)
+    for dot in myPop.myDots:
+        #pygame.draw.circle(screen, pygame.Color(dot.color), dot.getPos(), dot.radius)
+        dot.render(screen)
+
+    # Update the screen
+    pygame.display.flip()
+
+    # Loop through the events
+    for event in pygame.event.get():
+        # check if the event is the X button
+        if event.type==pygame.QUIT:
+            # if it is quit the game
+            print("Quitting the game")
+            pygame.quit()
+            exit(0)
+
+    # Update the elements
+    for dot in myPop.myDots:
+        dot.update()
+        # Kill session for our dots...
+        # TODO
+
+    # End of Generation?
+    if areAllDotsDead(myPop.myDots):
+        #for dot in myPop.myDots:
+            #print(dot.x, dot.y, dot.evaluate())
+        break
+
+    # Maintain at most 10 FPS
+    clock.tick(10)
+
+myPop.naturalSelection()
+#myPop.getBestDot()
+#myPop.markBestDot()
+
+fps = 10
+timeframe = 2
+frame = 0
+
+while frame < timeframe * fps:
+    # clear the screen before drawing it again
+    screen.fill(white)
+    # Draw informations
+    text = font.render("Generation "+str(myPop.generation), True, lblue)
+    textRect = text.get_rect()
+    textRect.topleft = (50, 20)
+    screen.blit(text, textRect)
+    text2 = font.render("Morts "+str(100), True, lblue)
+    textRect2 = text2.get_rect()
+    textRect2.topleft = (50, 44)
+    screen.blit(text2, textRect2)
+    # Draw dots
+    gDot.render(screen)
+    for dot in myPop.myDots:
+        dot.render(screen)
+
+    # Update the screen
+    pygame.display.flip()
+
+    # Loop through the events
+    for event in pygame.event.get():
+        # check if the event is the X button
+        if event.type==pygame.QUIT:
+            # if it is quit the game
+            print("Quitting the game")
+            pygame.quit()
+            exit(0)
+
+    clock.tick(10)
+    frame +=1
+
+
+# Main Loop
+while 1:
+    # clear the screen before drawing it again
+    screen.fill(white)
+    # Draw informations
+    text = font.render("Generation "+str(myPop.generation), True, lblue)
     textRect = text.get_rect()
     textRect.topleft = (50, 20)
     screen.blit(text, textRect)
@@ -106,8 +194,10 @@ while 1:
     # Maintain at most 10 FPS
     clock.tick(10)
 
-myPop.getBestDot()
-myPop.markBestDot()
+myPop.naturalSelection()
+
+#myPop.getBestDot()
+#myPop.markBestDot()
 
 fps = 10
 timeframe = 10
@@ -117,7 +207,7 @@ while frame < timeframe * fps:
     # clear the screen before drawing it again
     screen.fill(white)
     # Draw informations
-    text = font.render("Generation "+str(1), True, lblue)
+    text = font.render("Generation "+str(myPop.generation), True, lblue)
     textRect = text.get_rect()
     textRect.topleft = (50, 20)
     screen.blit(text, textRect)
