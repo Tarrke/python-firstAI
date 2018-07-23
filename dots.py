@@ -109,7 +109,7 @@ class dots:
             r = random() * 360
             v.from_polar((1,r))
             self.moves.append(v)
-        print(self.moves[0].x)
+        #print(self.moves[0].x)
 
     def evaluate(self):
         """Returns an evaluation of dot:
@@ -133,11 +133,12 @@ class dots:
         for acc in self.moves:
             r = random()
             if r < mutationRate:
+                print("I've mutated.")
                 # Going an other way
                 acc.from_polar((1, random()*360))
 
     def gimmeBabyBrain(self):
-        return self.moves
+        return self.moves.copy()
 
     def setBrain(self, brain):
         self.moves = brain

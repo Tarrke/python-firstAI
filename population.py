@@ -15,7 +15,11 @@ class population:
         self.color = color
         self.bestDot = None
         self.generation = 1
+        self.maxSteps = 0
 
+    def setMaxStep(self, steps):
+        self.maxSteps = steps
+        dots.steps = steps
 
     def areAllDotsDead(self):
         for dot in self.myDots:
@@ -73,10 +77,13 @@ class population:
         r = random() * scoreSum
 
         runningScoreSum = 0
+        i = 0
         for dot in self.myDots:
             runningScoreSum += dot.evaluate()
             if runningScoreSum > r:
+                print("~~choose dot", i)
                 return dot
+            i += 1
 
     def naturalSelection(self):
         newDots = [ dots(self.color, self.start) for i in range(self.dotNumber) ]
@@ -87,12 +94,16 @@ class population:
         newDots[0].x = self.start[0]
         newDots[0].y = self.start[1]
         newDots[0].dead = False
+        newDots[0].iter = 0
 
-        for dot in newDots:
+        for dot in newDots[1:]:
             dot.setBrain(self.selectParent().gimmeBabyBrain())
+            dot.mutateBrain()
+
+        print(self.myDots)
 
         self.myDots = newDots
-        print("Natural Selection is done;")
-        for dot in self.myDots:
-            print(dot.dead)
+        print("Natural Selection is done.")
+        #for dot in self.myDots:
+        #    print(dot.dead)
         self.generation += 1
