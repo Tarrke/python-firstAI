@@ -44,8 +44,8 @@ goal = (400, 50)
 #dots.screenY = screenSize[1]
 #dots.steps = 200
 #dots.vmax = 10
-maxSteps = 40
-max_dots = 10
+maxSteps = 50
+max_dots = 200
 
 obstacle = []
 
