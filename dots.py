@@ -24,6 +24,9 @@ class dots:
     vmax = 10
     vmaxsquare = vmax * vmax
 
+    # # Chance that a specific direction is mutated
+    mutationRate = 0.1
+
     @staticmethod
     def setGoal(goal):
         """Sets the goal
@@ -129,16 +132,15 @@ class dots:
         self.colorString = colorString
 
     def mutateBrain(self):
-        mutationRate = 0.01 # Chance that a specific direction is mutated
         for acc in self.moves:
             r = random()
-            if r < mutationRate:
-                print("I've mutated.")
+            if r < dots.mutationRate:
                 # Going an other way
                 acc.from_polar((1, random()*360))
+                print("I've mutated. =>", acc)
 
     def gimmeBabyBrain(self):
         return self.moves.copy()
 
     def setBrain(self, brain):
-        self.moves = brain
+        self.moves = brain.copy()

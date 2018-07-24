@@ -10,19 +10,6 @@ from random import randint
 white = pygame.Color("white")
 lblue = pygame.Color(120,120,255, 0)
 
-
-#def areAllDotsDead(dotList):
-#    for dot in dotList:
-#        if not dot.dead :
-#            return False
-#    return True
-
-#def countDead(dotList):
-#    a = [ 1 for d in dotList if d.dead ]
-#    return len(a)
-
-
-
 # 2 - Initialize the game
 pygame.init()
 
@@ -40,12 +27,8 @@ clock = pygame.time.Clock()
 start = (400, 550)
 goal = (400, 50)
 
-#dots.screenX = screenSize[0]
-#dots.screenY = screenSize[1]
-#dots.steps = 200
-#dots.vmax = 10
-maxSteps = 50
-max_dots = 200
+maxSteps = 10
+max_dots = 4
 
 obstacle = []
 

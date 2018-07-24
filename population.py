@@ -100,7 +100,8 @@ class population:
             dot.setBrain(self.selectParent().gimmeBabyBrain())
             dot.mutateBrain()
 
-        print(self.myDots)
+        for dot in newDots:
+            print(hex(id(dot.moves)))
 
         self.myDots = newDots
         print("Natural Selection is done.")
