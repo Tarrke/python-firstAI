@@ -109,6 +109,21 @@ while myPop.generation < 10:
         # Maintain at most 10 FPS
         clock.tick(10)
 
+    # Construct the waiting screen
+    screen.fill(white)
+    text = font.render("Generation "+str(myPop.generation), True, lblue)
+    textRect = text.get_rect()
+    textRect.topleft = (50, 20)
+    screen.blit(text, textRect)
+    text2 = font.render("Morts "+str(myPop.countDead()), True, lblue)
+    textRect2 = text2.get_rect()
+    textRect2.topleft = (50, 44)
+    screen.blit(text2, textRect2)
+    # Draw dots
+    gDot.render(screen)
+    for dot in myPop.myDots:
+        dot.render(screen)
+
     myPop.naturalSelection()
     print("Getting generation", myPop.generation)
     #myPop.getBestDot()
@@ -119,25 +134,6 @@ while myPop.generation < 10:
     frame = 0
 
     while frame < timeframe * fps:
-        # clear the screen before drawing it again
-        screen.fill(white)
-        # Draw informations
-        text = font.render("Generation "+str(myPop.generation), True, lblue)
-        textRect = text.get_rect()
-        textRect.topleft = (50, 20)
-        screen.blit(text, textRect)
-        text2 = font.render("Morts "+str(100), True, lblue)
-        textRect2 = text2.get_rect()
-        textRect2.topleft = (50, 44)
-        screen.blit(text2, textRect2)
-        # Draw dots
-        gDot.render(screen)
-        for dot in myPop.myDots:
-            dot.render(screen)
-
-        # Update the screen
-        pygame.display.flip()
-
         # Loop through the events
         for event in pygame.event.get():
             # check if the event is the X button
