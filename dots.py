@@ -47,7 +47,7 @@ class dots:
         self.velocity = [0,0]
         self.dead = False
         self.pos = (self.x, self.y)
-        self.moves = []
+        self.moves = list()
         self.iter = 0
         self.deadTime = dots.steps
         self.hasReachedGoal = False
@@ -143,4 +143,4 @@ class dots:
         return self.moves.copy()
 
     def setBrain(self, brain):
-        self.moves = brain.copy()
+        self.moves = [ Vector2(v) for v in brain ]

@@ -27,8 +27,8 @@ clock = pygame.time.Clock()
 start = (400, 550)
 goal = (400, 50)
 
-maxSteps = 10
-max_dots = 4
+maxSteps = 100
+max_dots = 100
 
 obstacle = []
 

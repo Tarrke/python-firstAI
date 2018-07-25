@@ -77,13 +77,11 @@ class population:
         r = random() * scoreSum
 
         runningScoreSum = 0
-        i = 0
-        for dot in self.myDots:
+        for i, dot in enumerate(self.myDots):
             runningScoreSum += dot.evaluate()
             if runningScoreSum > r:
                 print("~~choose dot", i)
                 return dot
-            i += 1
 
     def naturalSelection(self):
         newDots = [ dots(self.color, self.start) for i in range(self.dotNumber) ]
@@ -96,12 +94,19 @@ class population:
         newDots[0].dead = False
         newDots[0].iter = 0
 
+        for dot in self.myDots:
+            print(dot.evaluate())
+
         for dot in newDots[1:]:
             dot.setBrain(self.selectParent().gimmeBabyBrain())
             dot.mutateBrain()
 
-        for dot in newDots:
-            print(hex(id(dot.moves)))
+        #for dot in newDots:
+        #    chn=str(hex(id(dot.moves))) + " "
+        #    for move in dot.moves:
+        #        chn += str( (move[0], move[1]) ) + " "
+            #print(hex(id(dot.moves)), dot.moves)
+        #    print(chn)
 
         self.myDots = newDots
         print("Natural Selection is done.")
